@@ -1,3 +1,8 @@
+"""
+    Encrypting your files with a custom 'salt'
+
+"""
+
 import base64
 from Crypto.Cipher import AES
 import getpass
@@ -7,7 +12,7 @@ import pdb
 
 def salt_gen():
     """
-        You enter you key phrase and it'll be converted to base64 string
+        Your key phrase will be converted to base64 string
     """
     salt = getpass.getpass("Enter salt: ")
 
@@ -15,12 +20,13 @@ def salt_gen():
         salt = base64.b64encode(salt.encode())
         return salt
     except Exception as ex:
-        pdb.set_trace()
+        print(ex)
         return None
 
 
 def key_gen():
-    """Generate AES obj to encode or decode.
+    """ 
+        Generate AES obj to encode or decode.
         This function calls salt_gen to get the key_phrase
     """
     try:
@@ -70,4 +76,4 @@ if __name__ == '__main__':
     elif (choice == 'd' and len(file_path) > 2):
         decry(file_path)
     else:
-        print("Invalid choice.Exiting now.... ")
+        print("Exiting now.... ")
