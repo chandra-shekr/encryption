@@ -1,6 +1,5 @@
-"""
-    Encrypting your files with a custom 'salt'
-
+""" 
+    Encrypts your file with a custom key phrase
 """
 
 import base64
@@ -9,10 +8,9 @@ import getpass
 import sys
 import pdb
 
-
 def salt_gen():
     """
-        Your key phrase will be converted to base64 string
+        You enter you key phrase and it'll be converted to base64 string
     """
     salt = getpass.getpass("Enter salt: ")
 
@@ -20,13 +18,11 @@ def salt_gen():
         salt = base64.b64encode(salt.encode())
         return salt
     except Exception as ex:
-        print(ex)
+        pdb.set_trace()
         return None
 
-
 def key_gen():
-    """ 
-        Generate AES obj to encode or decode.
+    """Generate AES obj to encode or decode.
         This function calls salt_gen to get the key_phrase
     """
     try:
@@ -38,42 +34,44 @@ def key_gen():
         print(ex1)
         return None
 
-
 def encry(file_path):
 
     key_gen_obj = key_gen()
     if key_gen_obj is None:
         print("Sorry, cannot continue the process. Exiting now......")
-    with open(str(file_path), 'r') as f:
+    with open(str(file_path), 'rb') as f:
         data = f.read()
-    encry_data = key_gen_obj.encrypt(data.encode())
-    encry_data = base64.b64encode(encry_data).decode()
-    with open(file_path, 'w') as f:
+    print(data)
+    pdb.set_trace()
+    encry_data = key_gen_obj.encrypt(data)
+    encry_data = base64.b64encode(encry_data)
+    with open(file_path, 'wb') as f:
         f.write(encry_data)
     print("File successfully encrypted")
-
 
 def decry(file_path):
 
     key_gen_obj = key_gen()
     if key_gen_obj is None:
         print("Sorry, cannot continue the process. Exiting now......")
-    with open(str(file_path), 'r') as f:
+    with open(str(file_path), 'rb') as f:
         data = f.read()
     data = base64.b64decode(data)
     decry_data = key_gen_obj.decrypt(data)
-    with open(file_path, 'w') as f:
-        f.write(decry_data.decode())
+    print(data)
+    pdb.set_trace()
+    with open(file_path, 'wb') as f:
+        f.write(decry_data)
     print("File successfully decrypted")
 
 
 if __name__ == '__main__':
 
-    file_path = input("Enter you file path: ")
+    file_path = str(sys.argv[1])
     choice = input("Do you want to Encrypt (E) or Decrypt (D). Press 'q' to quit: ").lower()
-    if(choice == 'e' and len(file_path) > 2):
+    if(choice =='e' and len(file_path) > 2):
         encry(file_path)
-    elif (choice == 'd' and len(file_path) > 2):
+    elif (choice=='d' and len(file_path) > 2):
         decry(file_path)
     else:
-        print("Exiting now.... ")
+        print("Invalid choice.Exiting now.... ")
