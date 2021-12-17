@@ -41,8 +41,6 @@ def encry(file_path):
         print("Sorry, cannot continue the process. Exiting now......")
     with open(str(file_path), 'rb') as f:
         data = f.read()
-    print(data)
-    pdb.set_trace()
     encry_data = key_gen_obj.encrypt(data)
     encry_data = base64.b64encode(encry_data)
     with open(file_path, 'wb') as f:
@@ -58,8 +56,6 @@ def decry(file_path):
         data = f.read()
     data = base64.b64decode(data)
     decry_data = key_gen_obj.decrypt(data)
-    print(data)
-    pdb.set_trace()
     with open(file_path, 'wb') as f:
         f.write(decry_data)
     print("File successfully decrypted")
